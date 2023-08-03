@@ -16,7 +16,8 @@ jobs:
       - uses: iterative/setup-cml@v1
       - uses: actions/checkout@v3
       - name: Install CML
-        run: pip install -U cml
+        run: |
+          pip install -U cml
       - name: Train model
         run: |
           # Your ML workflow goes here
