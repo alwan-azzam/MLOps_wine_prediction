@@ -1,26 +1,19 @@
-name: model-wine
+name: mlops-exaple-tensorflow-regression
 on: [push]
 jobs:
-  run:
+  train-and-report:
     runs-on: [ubuntu-latest]
     container: docker://dvcorg/cml-py3:latest
     steps:
       - uses: actions/checkout@v2
-      - name: cml_run
+      - name: 'Train my model'
         env:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
 
           # Your ML workflow goes here
           pip install -r requirements.txt
           python train.py
-          
-          echo "## Model metrics" > report.md
           cat metrics.txt >> report.md
-          
-          echo "## Data viz" >> report.md
-          cml-publish feature_importance.png --md >> report.md
-          cml-publish residuals.png --md >> report.md
-          
-          cml-send-comment report.md
-          
+          cml publish model_results.png --md >> report.md
+          cml comment create report.md
